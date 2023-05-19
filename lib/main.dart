@@ -20,6 +20,7 @@ class App extends StatelessWidget {
           color: Color(0xFF232B55),
         )),
         cardColor: const Color(0xFFF4EDDB),
+        disabledColor: const Color(0xFFcccccc),
       ),
       home: const HomeScreen(),
     );
