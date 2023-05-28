@@ -21,14 +21,11 @@ class HomeScreen extends StatelessWidget {
         future: webtoons,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return ListView.separated(
-              scrollDirection: Axis.horizontal,
-              itemCount: snapshot.data!.length,
-              separatorBuilder: (context, index) => const SizedBox(width: 20),
-              itemBuilder: (context, index) {
-                var webtoon = snapshot.data![index];
-                return Text(webtoon.title);
-              },
+            return Column(
+              children: [
+                const SizedBox(height: 20),
+                Expanded(child: makeList(snapshot)),
+              ],
             );
           } else {
             return const Center(
@@ -37,6 +34,47 @@ class HomeScreen extends StatelessWidget {
           }
         },
       ),
+    );
+  }
+
+  ListView makeList(AsyncSnapshot<List<WebtoonModel>> snapshot) {
+    return ListView.separated(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      scrollDirection: Axis.horizontal,
+      itemCount: snapshot.data!.length,
+      separatorBuilder: (context, index) => const SizedBox(width: 40),
+      itemBuilder: (context, index) {
+        var webtoon = snapshot.data![index];
+        return Column(
+          children: [
+            Container(
+              width: 250,
+              clipBehavior: Clip.hardEdge,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    blurRadius: 5,
+                    offset: const Offset(0, 0),
+                    color: Colors.black.withOpacity(0.5),
+                  ),
+                ],
+              ),
+              child: Image.network(webtoon.thumb),
+            ),
+            const SizedBox(
+              height: 14,
+            ),
+            Text(
+              webtoon.title,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
