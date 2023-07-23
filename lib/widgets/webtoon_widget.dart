@@ -18,6 +18,7 @@ class WebtoonWidget extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
+            fullscreenDialog: true,
             builder: (context) => DetailScreen(
               id: id,
               title: title,
