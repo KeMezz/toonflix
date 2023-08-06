@@ -30,10 +30,27 @@ class _DetailScreenState extends State<DetailScreen> {
     final likedToons = prefs.getStringList('likedToons');
     if (likedToons != null) {
       if (likedToons.contains(widget.id) == true) {
-        isLiked = true;
+        setState(() {
+          isLiked = true;
+        });
       }
     } else {
       prefs.setStringList('likedToons', []);
+    }
+  }
+
+  toggleHeart() async {
+    final likedToons = prefs.getStringList('likedToons');
+    if (likedToons != null) {
+      if (isLiked) {
+        likedToons.remove(widget.id);
+      } else {
+        likedToons.add(widget.id);
+      }
+      await prefs.setStringList('likedToons', likedToons);
+      setState(() {
+        isLiked = !isLiked;
+      });
     }
   }
 
@@ -52,9 +69,9 @@ class _DetailScreenState extends State<DetailScreen> {
       appBar: AppBar(
         actions: [
           IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.favorite_outline_rounded,
+            onPressed: toggleHeart,
+            icon: Icon(
+              isLiked ? Icons.favorite_rounded : Icons.favorite_outline_rounded,
             ),
           ),
         ],
